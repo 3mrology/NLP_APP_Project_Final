@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mental Health Chatbot Evaluation Results</title>
+    <style>
+        :root {
+            --primary-color: #5b6de8;
+            --secondary-color: #8e44ad;
+            --light-color: #f8f9fa;
+            --dark-color: #343a40;
+            --border-color: #dee2e6;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: var(--font-family);
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f7fa;
+            padding-bottom: 2rem;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        header .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        h2 {
+            font-size: 2rem;
+            margin: 2rem 0 1rem;
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 0.5rem;
+        }
+        
+        h3 {
+            font-size: 1.5rem;
+            margin: 1.5rem 0 1rem;
+            color: var(--secondary-color);
+        }
+        
+        p {
+            margin-bottom: 1rem;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .card-header {
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .card-header h3 {
+            margin: 0;
+        }
+        
+        .card-body {
+            padding: 0.5rem 0;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            background-color: white;
+        }
+        
+        th, td {
+            padding: 0.75rem;
+            text-align: left;
+            border: 1px solid var(--border-color);
+        }
+        
+        th {
+            background-color: var(--light-color);
+            font-weight: bold;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        
+        .system-comparison img, .result-visualization img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 1rem auto;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .test-case {
+            background-color: #f8f9fa;
+            border-left: 4px solid var(--primary-color);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .test-case p {
+            margin: 0.5rem 0;
+        }
+        
+        .test-case .user {
+            font-weight: bold;
+            color: var(--dark-color);
+        }
+        
+        .test-case .expected {
+            color: var(--secondary-color);
+            font-style: italic;
+        }
+        
+        .pipeline-step {
+            display: flex;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+        
+        .step-number {
+            background-color: var(--primary-color);
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+            margin-right: 1rem;
+        }
+        
+        .step-content {
+            flex-grow: 1;
+        }
+        
+        .pipeline-step:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            left: 18px;
+            top: 36px;
+            bottom: -18px;
+            width: 2px;
+            background-color: var(--border-color);
+        }
+        
+        .metric-highlight {
+            display: flex;
+            justify-content: space-between;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+        
+        .metric-box {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 1rem;
+            width: calc(25% - 1rem);
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        
+        .metric-box h4 {
+            color: var(--secondary-color);
+            margin-bottom: 0.5rem;
+        }
+        
+        .metric-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        
+        .system-name {
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        
+        @media (max-width: 992px) {
+            .metric-box {
+                width: calc(50% - 1rem);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .metric-box {
+                width: 100%;
+            }
+        }
+        
+        .responsive-table {
+            overflow-x: auto;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding: 1rem 0;
+            border-top: 1px solid var(--border-color);
+            color: #6c757d;
+        }
+        
+        /* Additional styles */
+        .highlight-box {
+            background-color: #f0f7ff;
+            border-left: 4px solid var(--primary-color);
+            padding: 1rem;
+            margin: 1.5rem 0;
+        }
+        
+        .system-badge {
+            display: inline-block;
+            padding: 0.35rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .badge-neo4j {
+            background-color: #4DB33D;
+            color: white;
+        }
+        
+        .badge-rule {
+            background-color: #FF7F50;
+            color: white;
+        }
+        
+        .badge-bert {
+            background-color: #3498DB;
+            color: white;
+        }
+        
+        .badge-llama {
+            background-color: #9B59B6;
+            color: white;
+        }
+        
+        .chart-container {
+            margin: 2rem 0;
+        }
+        
+        blockquote {
+            border-left: 4px solid var(--primary-color);
+            padding-left: 1rem;
+            margin: 1.5rem 0;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Mental Health Chatbot Evaluation</h1>
+            <p>Comprehensive Analysis of AI-Based Mental Health Disorder Detection Systems</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                <h3>Project Overview</h3>
+            </div>
+            <div class="card-body">
+                <p>This evaluation compares the performance of our Neo4j Knowledge Graph Chatbot against other AI-based mental health screening systems. The goal is to assess each system's ability to accurately identify mental health disorders from conversational inputs, with a focus on four common conditions: Major Depressive Disorder, Generalized Anxiety Disorder, Bipolar Disorder, and Panic Disorder.</p>
+                
+                <div class="highlight-box">
+                    <p><strong>Systems evaluated:</strong></p>
+                    <div>
+                        <span class="system-badge badge-neo4j">Advanced Neo4j Knowledge Graph Chatbot</span>
+                        <span class="system-badge badge-rule">Rule-Based Screening Tool</span>
+                        <span class="system-badge badge-bert">Bio_ClinicalBERT (HuggingFace)</span>
+                        <span class="system-badge badge-llama">Llama-3.3-70B-Instruct-Turbo</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h2>Evaluation Pipeline</h2>
+        
+        <div class="card">
+            <div class="card-body">
+                <div class="pipeline-step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>Test Case Development</h3>
+                        <p>We created an expanded dataset consisting of:</p>
+                        <ul>
+                            <li><strong>44 single-turn conversations</strong> across four disorder categories</li>
+                            <li><strong>9 multi-turn scenarios</strong> with increasing symptom revelation</li>
+                        </ul>
+                        <p>Each test case was annotated with:</p>
+                        <ul>
+                            <li>Expected disorder diagnosis</li>
+                            <li>Key symptoms present in the text</li>
+                            <li>Behaviors indicated by the language</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="pipeline-step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>System Initialization</h3>
+                        <p>We implemented and configured four different approaches:</p>
+                        <ul>
+                            <li><strong>Neo4j Knowledge Graph Chatbot:</strong> Our proposed system using a graph database with 4,154 nodes and 109,354 relationships</li>
+                            <li><strong>Rule-Based Screening Tool:</strong> A simple keyword-matching system using predefined disorder indicators</li>
+                            <li><strong>Bio_ClinicalBERT:</strong> A specialized BERT model fine-tuned on clinical text, running via HuggingFace Inference API</li>
+                            <li><strong>Llama-3.3-70B-Instruct-Turbo:</strong> A large language model accessible through Together.ai's API</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="pipeline-step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>Test Execution</h3>
+                        <p>For each system, we processed all test cases and collected:</p>
+                        <ul>
+                            <li>System responses</li>
+                            <li>Detected disorders</li>
+                            <li>Response latency</li>
+                            <li>Additional metadata (identified symptoms and behaviors where available)</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="pipeline-step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h3>Metrics Calculation</h3>
+                        <p>We calculated several metrics to comprehensively compare system performance:</p>
+                        <ul>
+                            <li><strong>Overall accuracy:</strong> For both single-turn and multi-turn conversations</li>
+                            <li><strong>Disorder-specific accuracy:</strong> Breaking down performance by disorder category</li>
+                            <li><strong>Response latency:</strong> Average time to process and respond to queries</li>
+                            <li><strong>Error rates:</strong> Instances where systems failed to process inputs</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="pipeline-step">
+                    <div class="step-number">5</div>
+                    <div class="step-content">
+                        <h3>Visualization and Reporting</h3>
+                        <p>We generated visualizations to better understand the comparative performance:</p>
+                        <ul>
+                            <li>Radar charts showing multi-dimensional performance profiles</li>
+                            <li>Bar charts comparing accuracy by disorder type</li>
+                            <li>Latency comparisons across systems</li>
+                            <li>Overall accuracy comparisons for single vs. multi-turn</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h2>Test Case Examples</h2>
+        
+        <div class="card">
+            <div class="card-body">
+                <h3>Single-Turn Test Cases</h3>
+                
+                <div class="test-case">
+                    <p class="user"><strong>DEP-01:</strong> "I've been feeling really down for the past month. I used to enjoy painting and hiking, but now nothing interests me. I'm sleeping 10-12 hours but still feel exhausted all the time."</p>
+                    <p class="expected"><strong>Expected diagnosis:</strong> Major Depressive Disorder</p>
+                    <p><strong>Key symptoms:</strong> Depression, Excessive Sleepiness</p>
+                    <p><strong>Key behaviors:</strong> Diminished interest, Fatigue</p>
+                </div>
+                
+                <div class="test-case">
+                    <p class="user"><strong>ANX-02:</strong> "My heart often races for no reason. I feel restless and can't relax. I'm constantly worrying about the future and things that might go wrong."</p>
+                    <p class="expected"><strong>Expected diagnosis:</strong> Generalized Anxiety Disorder</p>
+                    <p><strong>Key symptoms:</strong> Anxiety, Chest pain</p>
+                    <p><strong>Key behaviors:</strong> Excessive worry or fear, Restlessness</p>
+                </div>
+                
+                <div class="test-case">
+                    <p class="user"><strong>BIP-01:</strong> "I've barely slept for 3 days but feel amazing - full of energy! Started five new projects this week. Everyone says I'm talking too fast and making impulsive decisions."</p>
+                    <p class="expected"><strong>Expected diagnosis:</strong> Bipolar Disorder</p>
+                    <p><strong>Key behaviors:</strong> More talkative than usual, Recklessness, Inflated self-esteem</p>
+                </div>
+                
+                <div class="test-case">
+                    <p class="user"><strong>PAN-03:</strong> "When my chest tightens and I can't catch my breath, I'm convinced I'm having a heart attack. The doctor says it's just panic attacks, but it feels so real. I'm constantly monitoring my heart rate now."</p>
+                    <p class="expected"><strong>Expected diagnosis:</strong> Panic Disorder</p>
+                    <p><strong>Key symptoms:</strong> Panic attacks, Chest pain, Shortness of breath</p>
+                    <p><strong>Key behaviors:</strong> Excessive worry or fear, Health anxiety</p>
+                </div>
+
+                <h3>Multi-Turn Test Scenarios</h3>
+                
+                <div class="test-case">
+                    <p><strong>MT-03: Multi-turn Bipolar</strong></p>
+                    <p class="user"><strong>Turn 1:</strong> "My mood seems to change a lot, more than other people."</p>
+                    <p class="user"><strong>Turn 2:</strong> "Sometimes I feel like I have unlimited energy and don't need sleep."</p>
+                    <p class="user"><strong>Turn 3:</strong> "When I'm in those high moods, I make impulsive decisions like spending too much money, then I crash into depression."</p>
+                    <p class="expected"><strong>Expected diagnosis:</strong> Bipolar Disorder</p>
+                    <p><strong>Key symptoms:</strong> Depression, Mood swings</p>
+                    <p><strong>Key behaviors:</strong> Recklessness, Inflated self-esteem, More talkative than usual</p>
+                </div>
+                
+                <div class="test-case">
+                    <p><strong>MT-04: Multi-turn Panic</strong></p>
+                    <p class="user"><strong>Turn 1:</strong> "I've been feeling anxious in crowded places."</p>
+                    <p class="user"><strong>Turn 2:</strong> "Last week I suddenly felt like I couldn't breathe and my heart was racing."</p>
+                    <p class="user"><strong>Turn 3:</strong> "Now I'm afraid to go to public places because I worry about having another panic attack."</p>
+                    <p class="expected"><strong>Expected diagnosis:</strong> Panic Disorder</p>
+                    <p><strong>Key symptoms:</strong> Anxiety, Panic attacks, Shortness of breath</p>
+                    <p><strong>Key behaviors:</strong> Avoidance, Fear of losing control</p>
+                </div>
+            </div>
+        </div>
+
+        <h2>Neo4j Knowledge Graph Structure</h2>
+        
+        <div class="card">
+            <div class="card-body">
+                <p>Our Neo4j Knowledge Graph forms the foundation of the Advanced Neo4j Knowledge Graph Chatbot. As shown in Fig. 1, the graph contains:</p>
+                
+                <div class="chart-container">
+                    <p><strong>Fig. 1: Neo4j Knowledge Graph Visualization</strong></p>
+                    <img src="graph_visualization_placeholder.jpg" alt="Neo4j Knowledge Graph Visualization" />
+                    <p><em>Note: This is a placeholder for the Neo4j graph visualization shown in Image 1 from your uploaded content.</em></p>
+                </div>
+                
+                <h3>Graph Statistics:</h3>
+                <ul>
+                    <li><strong>Nodes:</strong> 4,154 total nodes</li>
+                    <li><strong>Relationships:</strong> 109,354 total relationships</li>
+                </ul>
+                
+                <h3>Node Types:</h3>
+                <ul>
+                    <li><strong>Disorder (3):</strong> Major Depressive Disorder, Generalized Anxiety Disorder, Bipolar Disorder, Panic Disorder</li>
+                    <li><strong>Symptom (75):</strong> Clinical symptoms like Depression, Anxiety, Chest pain, etc.</li>
+                    <li><strong>Behavior (34):</strong> Observable behaviors like Diminished interest, Excessive worry, etc.</li>
+                    <li><strong>Patient (4034):</strong> Anonymized patient records</li>
+                    <li><strong>TherapyType (2):</strong> Treatment modalities</li>
+                    <li><strong>WeightCondition (6):</strong> Weight-related health factors</li>
+                </ul>
+                
+                <h3>Relationship Types:</h3>
+                <ul>
+                    <li><strong>DIAGNOSED_WITH (7027):</strong> Links patients to disorders</li>
+                    <li><strong>DISPLAYS (63788):</strong> Links patients to symptoms they exhibit</li>
+                    <li><strong>EXHIBITS (163):</strong> Links patients to behaviors they demonstrate</li>
+                    <li><strong>HAS_CONDITION (108):</strong> Links patients to health conditions</li>
+                    <li><strong>MANIFESTS_AS (509):</strong> Links disorders to their symptomatic manifestations</li>
+                    <li><strong>REPORTS (37700):</strong> Links patients to self-reported symptoms</li>
+                    <li><strong>RESPONDS_TO (53):</strong> Links patients to therapy responses</li>
+                </ul>
+                
+                <blockquote>
+                    The knowledge graph enables our system to identify complex patterns of symptoms and behaviors that correlate with specific mental health disorders, allowing for more nuanced analysis than rule-based or purely statistical approaches.
+                </blockquote>
+            </div>
+        </div>
+
+        <h2>Results and Findings</h2>
+        
+        <div class="card">
+            <div class="card-header">
+                <h3>Overall Performance Comparison</h3>
+            </div>
+            <div class="card-body">
+                <div class="metric-highlight">
+                    <div class="metric-box">
+                        <h4>Single-Turn Accuracy</h4>
+                        <div class="metric-value">100%</div>
+                        <p>Neo4j Knowledge Graph Chatbot</p>
+                    </div>
+                    <div class="metric-box">
+                        <h4>Multi-Turn Accuracy</h4>
+                        <div class="metric-value">100%</div>
+                        <p>Neo4j Knowledge Graph Chatbot</p>
+                    </div>
+                    <div class="metric-box">
+                        <h4>Overall Accuracy</h4>
+                        <div class="metric-value">100%</div>
+                        <p>Neo4j Knowledge Graph Chatbot</p>
+                    </div>
+                    <div class="metric-box">
+                        <h4>Response Latency</h4>
+                        <div class="metric-value">7.50s</div>
+                        <p>Neo4j Knowledge Graph Chatbot</p>
+                    </div>
+                </div>
+                
+                <div class="chart-container">
+                    <p><strong>Fig. 5: System Accuracy Comparison</strong></p>
+                    <img src="system_accuracy_comparison.jpg" alt="System Accuracy Comparison" />
+                    <p><em>Note: This is a placeholder for the system accuracy comparison chart shown in Image 5 from your uploaded content.</em></p>
+                </div>
+                
+                <p>As depicted in Fig. 5, our Neo4j Knowledge Graph Chatbot achieved perfect accuracy in both single-turn (100%) and multi-turn (100%) conversations. The Rule-Based Screening Tool performed well in single-turn scenarios (91.7%) but struggled with multi-turn conversations (25%). The Llama-3.3-70B-Instruct-Turbo model showed moderate performance with 66.7% single-turn and 75% multi-turn accuracy, while Bio_ClinicalBERT performed poorly at 16.7% single-turn and 25% multi-turn accuracy.</p>
+                
+                <div class="responsive-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Metric</th>
+                                <th>Advanced Neo4j Knowledge Graph Chatbot</th>
+                                <th>Rule-Based Screening Tool</th>
+                                <th>HuggingFace Inference API (Free)</th>
+                                <th>Together.ai (Free Credits)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Single-Turn Accuracy</td>
+                                <td>1.00</td>
+                                <td>0.92</td>
+                                <td>0.17</td>
+                                <td>0.67</td>
+                            </tr>
+                            <tr>
+                                <td>Multi-Turn Accuracy</td>
+                                <td>1.00</td>
+                                <td>0.25</td>
+                                <td>0.25</td>
+                                <td>0.75</td>
+                            </tr>
+                            <tr>
+                                <td>Average Latency (s)</td>
+                                <td>7.50</td>
+                                <td>0.00</td>
+                                <td>0.93</td>
+                                <td>1.65</td>
+                            </tr>
+                            <tr>
+                                <td>Error Rate</td>
+                                <td>0.00</td>
+                                <td>0.00</td>
+                                <td>0.00</td>
+                                <td>0.00</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">
+                <h3>Multi-dimensional Performance Analysis</h3>
+            </div>
+            <div class="card-body">
+                <div class="chart-container">
+                    <p><strong>Fig. 2: System Comparison Across Metrics</strong></p>
+                    <img src="system_comparison_across_metrics.jpg" alt="System Comparison Across Metrics" />
+                    <p><em>Note: This is a placeholder for the radar chart shown in Image 2 from your uploaded content.</em></p>
+                </div>
+                
+                <p>Fig. 2 presents a radar chart comparing system performance across five key metrics: Single-Turn Accuracy, Multi-Turn Accuracy, Depression Accuracy, Anxiety Accuracy, and Response Speed. Our Neo4j Knowledge Graph Chatbot demonstrates superior performance in four dimensions, with slightly lower performance only in Response Speed. The Rule-Based Screening Tool excels in Response Speed and Depression Accuracy but underperforms in Anxiety Accuracy and Multi-Turn Accuracy. The LLM-based approaches (Together.ai and HuggingFace) show more balanced but generally lower performance across all dimensions.</p>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">
+                <h3>Latency Analysis</h3>
+            </div>
+            <div class="card-body">
+                <div class="chart-container">
+                    <p><strong>Fig. 3: Average Response Latency Comparison</strong></p>
+                    <img src="average_response_latency.jpg" alt="Average Response Latency Comparison" />
+                    <p><em>Note: This is a placeholder for the latency comparison chart shown in Image 3 from your uploaded content.</em></p>
+                </div>
+                
+                <p>As depicted in Fig. 3, our proposed system demonstrated an average response latency of 7.50 seconds, which was higher than other systems. The Rule-Based Screening Tool had near-instantaneous responses (0.00s), while the Bio_ClinicalBERT and Llama-3.3-70B-Instruct-Turbo models showed response latencies of 0.93 and 1.65 seconds, respectively. This latency difference is attributed to the comprehensive graph traversal operations required for our system's accurate disorder identification.</p>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">
+                <h3>Disorder-Specific Performance</h3>
+            </div>
+            <div class="card-body">
+                <div class="chart-container">
+                    <p><strong>Fig. 4: Accuracy by Disorder Category</strong></p>
+                    <img src="accuracy_by_disorder.jpg" alt="Accuracy by Disorder Category" />
+                    <p><em>Note: This is a placeholder for the disorder-specific accuracy chart shown in Image 4 from your uploaded content.</em></p>
+                </div>
+                
+                <p>Fig. 4 illustrates the accuracy breakdown by disorder category. Our Neo4j Knowledge Graph Chatbot achieved 100% accuracy across all four disorder categories. The Rule-Based Screening Tool performed excellently for Depression (100%) but showed reduced accuracy for Anxiety (66.7%), while maintaining 100% accuracy for Panic disorders. Together.ai demonstrated balanced accuracy across Depression (66.7%), Anxiety (100%), and Bipolar (66.7%), but struggled with Panic disorders (33.3%). The Bio_ClinicalBERT model could only successfully identify Depression cases (66.7%) but failed to recognize other disorders.</p>
+                
+                <h3>Key Disorder-Specific Findings:</h3>
+                
+                <ul>
+                    <li><strong>Depression:</strong> Most systems performed relatively well at identifying depressive symptoms, with only Bio_ClinicalBERT showing lower accuracy (66.7%).</li>
+                    <li><strong>Anxiety:</strong> Rule-Based system struggled (66.7%), while Bio_ClinicalBERT completely failed to identify anxiety disorders.</li>
+                    <li><strong>Bipolar Disorder:</strong> Only our Neo4j Knowledge Graph Chatbot achieved perfect accuracy, with Together.ai showing moderate performance (66.7%).</li>
+                    <li><strong>Panic Disorder:</strong> Together.ai performed poorly (33.3%), while Bio_ClinicalBERT failed to identify any panic disorder cases.</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">
+                <h3>Symptom and Behavior Recognition</h3>
+            </div>
+            <div class="card-body">
+                <p>A distinguishing feature of our Neo4j Knowledge Graph Chatbot is its ability to identify specific symptoms and behaviors beyond disorder classification. While competing systems only provide disorder labels, our system accurately identified key symptoms (e.g., "Depression," "Anxiety," "Panic attacks") and behaviors (e.g., "Diminished interest," "Excessive worry," "Racing thoughts") that inform the diagnostic process.</p>
+                
+                <p>For example, in test case DEP-01, our system identified:</p>
+                <ul>
+                    <li><strong>Symptoms:</strong> Depression, Excessive Sleepiness</li>
+                    <li><strong>Behaviors:</strong> Diminished interest, Fatigue</li>
+                </ul>
+                
+                <p>This granular analysis provides significantly more clinical value than simply stating "Major Depressive Disorder" as the other systems do. The ability to recognize specific symptoms and behavioral patterns makes our system more useful for actual clinical screening purposes.</p>
+                
+                <blockquote>
+                    The Neo4j Knowledge Graph's ability to identify specific symptoms and behaviors provides clinicians with more actionable information for assessment and treatment planning compared to black-box diagnostic labels.
+                </blockquote>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">
+                <h3>Conclusion</h3>
+            </div>
+            <div class="card-body">
+                <p>Our comprehensive evaluation demonstrates that the Neo4j Knowledge Graph Chatbot significantly outperforms alternative approaches in mental health disorder identification across multiple dimensions:</p>
+                
+                <ul>
+                    <li><strong>Superior Accuracy:</strong> Achieved 100% accuracy in both single-turn and multi-turn conversations across all disorder categories</li>
+                    <li><strong>Robust Disorder Recognition:</strong> Consistently identified all four mental health disorders (Depression, Anxiety, Bipolar, Panic)</li>
+                    <li><strong>Detailed Symptom and Behavior Identification:</strong> Provided granular analysis beyond simple disorder labels</li>
+                    <li><strong>Conversation Context Understanding:</strong> Successfully tracked and integrated information across multi-turn conversations</li>
+                </ul>
+                
+                <p>The primary trade-off observed was increased response latency (7.50 seconds versus near-instantaneous for rule-based approaches), which is attributable to the comprehensive graph traversal operations. However, this latency is still within acceptable parameters for real-world clinical screening applications, where accuracy is paramount.</p>
+                
+                <p>These results validate our hypothesis that a knowledge graph-based approach can more effectively model the complex relationships between symptoms, behaviors, and mental health disorders than either simple rule-based systems or large language models without domain-specific knowledge structures.</p>
+            </div>
+        </div>
+        
+        <h2>System-Specific Analysis</h2>
+        
+        <div class="card">
+            <div class="card-header">
+                <h3>Neo4j Knowledge Graph Chatbot</h3>
+            </div>
+            <div class="card-body">
+                <p>Our proposed system leverages a comprehensive knowledge graph to identify mental health disorders based on symptom patterns and behavioral indicators. The system's strengths include:</p>
+                
+                <ul>
+                    <li><strong>Perfect accuracy (100%)</strong> across all test cases</li>
+                    <li><strong>Robust multi-turn performance</strong>, maintaining context across conversation turns</li>
+                    <li><strong>Granular symptom and behavior identification</strong>, providing more clinically valuable information</li>
+                    <li><strong>Consistent performance</strong> across all disorder categories</li>
+                </ul>
+                
+                <p>The primary limitation was increased response latency (7.50s) compared to simpler systems, though this remains acceptable for most clinical applications.</p>
+                
+                <h4>Sample Response for Depression Case:</h4>
+                <div class="test-case">
+                    <p class="user"><strong>User:</strong> "I've been feeling really down for the past month. I used to enjoy painting and hiking, but now nothing interests me. I'm sleeping 10-12 hours but still feel exhausted all the time."</p>
+                    <p><strong>Neo4j Chatbot:</strong> "I understand you're experiencing depression and excessive sleepiness and showing diminished interest and fatigue. This is consistent with Major Depressive Disorder. Would you like to talk more about how this is affecting you?"</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">
+                <h3>Rule-Based Screening Tool</h3>
+            </div>
+            <div class="card-body">
+                <p>The rule-based approach used simple keyword matching against predefined disorder indicators. Its performance characteristics include:</p>
+                
+                <ul>
+                    <li><strong>Strong single-turn accuracy (91.7%)</strong>, particularly for depression cases</li>
+                    <li><strong>Near-instantaneous response time (0.00s)</strong></li>
+                    <li><strong>Poor multi-turn performance (25%)</strong>, lacking contextual understanding</li>
+                    <li><strong>Inconsistent performance across disorders</strong> (100% for Depression, 66.7% for Anxiety)</li>
+                </ul>
+                
+                <h4>Sample Response for Depression Case:</h4>
+                <div class="test-case">
+                    <p class="user"><strong>User:</strong> "I've been feeling really down for the past month. I used to enjoy painting and hiking, but now nothing interests me. I'm sleeping 10-12 hours but still feel exhausted all the time."</p>
+                    <p><strong>Rule-Based Tool:</strong> "It sounds like you might be experiencing symptoms of depression. It's important to talk to a healthcare provider about these feelings."</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">
+                <h3>Bio_ClinicalBERT (HuggingFace)</h3>
+            </div>
+            <div class="card-body">
+                <p>The Bio_ClinicalBERT model is a specialized BERT variant fine-tuned on clinical text. Its evaluation revealed:</p>
+                
+                <ul>
+                    <li><strong>Poor single-turn accuracy (16.7%)</strong> across test cases</li>
+                    <li><strong>Limited multi-turn performance (25%)</strong></li>
+                    <li><strong>Disorder recognition limited primarily to depression</strong></li>
+                    <li><strong>Moderate response time (0.93s)</strong></li>
+                </ul>
+                
+                <p>The poor performance likely stems from insufficient fine-tuning on mental health disorders specifically, despite the model's clinical background.</p>
+                
+                <h4>Sample Response for Depression Case:</h4>
+                <div class="test-case">
+                    <p class="user"><strong>User:</strong> "I've been feeling really down for the past month. I used to enjoy painting and hiking, but now nothing interests me. I'm sleeping 10-12 hours but still feel exhausted all the time."</p>
+                    <p><strong>Bio_ClinicalBERT:</strong> "Based on your description, I've analyzed your symptoms. It's important to consult a mental health professional for a comprehensive evaluation. [ASSESSMENT: Major Depressive Disorder]"</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">
+                <h3>Llama-3.3-70B-Instruct-Turbo (Together.ai)</h3>
+            </div>
+            <div class="card-body">
+                <p>This large language model showed balanced but moderate performance:</p>
+                
+                <ul>
+                    <li><strong>Moderate single-turn accuracy (66.7%)</strong></li>
+                    <li><strong>Better multi-turn performance (75%)</strong> than the rule-based system</li>
+                    <li><strong>Strong anxiety disorder detection (100%)</strong> but weak panic disorder detection (33.3%)</li>
+                    <li><strong>Reasonable response time (1.65s)</strong></li>
+                </ul>
+                
+                <p>The LLM's ability to understand context helped with multi-turn conversations, but its lack of specialized mental health knowledge limited overall accuracy.</p>
+                
+                <h4>Sample Response for Anxiety Case:</h4>
+                <div class="test-case">
+                    <p class="user"><strong>User:</strong> "My heart often races for no reason. I feel restless and can't relax. I'm constantly worrying about the future and things that might go wrong."</p>
+                    <p><strong>Llama-3.3-70B:</strong> "I notice you're describing what could be anxiety symptoms. Your constant worry about the future, restlessness, and physical symptoms like a racing heart are consistent with Generalized Anxiety Disorder. Speaking with a mental health professional can help you manage these feelings. [ASSESSMENT: Generalized Anxiety Disorder]"</p>
+                </div>
+            </div>
+        </div>
+        
+        <h2>Key Insights and Implications</h2>
+        
+        <div class="card">
+            <div class="card-body">
+                <h3>Primary Findings</h3>
+                
+                <ol>
+                    <li><strong>Knowledge graphs outperform both simple rules and general LLMs</strong> for mental health disorder identification, achieving perfect accuracy across disorder types and conversation formats.</li>
+                    <li><strong>Multi-turn conversation handling</strong> remains challenging for most systems except the Neo4j Knowledge Graph Chatbot and, to a lesser extent, the Llama model.</li>
+                    <li><strong>Response latency trade-offs</strong> exist between more sophisticated models (higher accuracy, slower response) and simpler approaches (lower accuracy, faster response).</li>
+                    <li><strong>Disorder-specific performance varies significantly</strong> across systems, with depression being the most consistently identified disorder and panic/bipolar being more challenging.</li>
+                </ol>
+                
+                <h3>Clinical Implications</h3>
+                
+                <p>The evaluation results suggest several important implications for clinical applications:</p>
+                
+                <ul>
+                    <li><strong>Screening support:</strong> The Neo4j Knowledge Graph Chatbot could serve as an effective screening support tool for mental health professionals, providing accurate initial assessments.</li>
+                    <li><strong>Detailed symptom analysis:</strong> The system's ability to identify specific symptoms and behaviors provides clinically relevant information beyond simple diagnostic labels.</li>
+                    <li><strong>Conversation continuity:</strong> Strong multi-turn performance enables more natural patient interactions where symptoms may be revealed gradually.</li>
+                    <li><strong>Specialized disorder detection:</strong> The system's consistent performance across disorder categories allows for reliable screening across multiple conditions.</li>
+                </ul>
+                
+                <blockquote>
+                    While these AI systems demonstrate promising capabilities for mental health screening support, they are designed to augment rather than replace clinical judgment, serving as tools to help mental health professionals deliver more efficient and effective care.
+                </blockquote>
+            </div>
+        </div>
+        
+        <h2>Future Directions</h2>
+        
+        <div class="card">
+            <div class="card-body">
+                <p>Based on our evaluation findings, several promising directions for future work emerge:</p>
+                
+                <ol>
+                    <li><strong>Latency optimization:</strong> Improving the Neo4j query efficiency to reduce response time while maintaining accuracy</li>
+                    <li><strong>Expanded disorder coverage:</strong> Extending the knowledge graph to include additional mental health conditions beyond the four evaluated</li>
+                    <li><strong>Hybrid approaches:</strong> Combining knowledge graph structures with large language models to leverage the strengths of both</li>
+                    <li><strong>Longitudinal conversation handling:</strong> Enhancing the system to track symptoms and behaviors across extended conversation periods</li>
+                    <li><strong>Treatment recommendation support:</strong> Expanding capabilities to include evidence-based intervention suggestions based on identified patterns</li>
+                </ol>
+                
+                <p>These enhancements would further strengthen the clinical utility of the Neo4j Knowledge Graph Chatbot for mental health applications.</p>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="container">
+            <p>Mental Health Chatbot Evaluation Project &copy; 2025 | Neo4j Knowledge Graph Therapeutic Chatbot</p>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,169 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="650" viewBox="0 0 900 650">
+  <!-- Styles -->
+  <defs>
+    <style>
+      .node { stroke: #333; stroke-width: 2; rx: 25; ry: 25; }
+      .disorder-node { fill: #ffcccc; }
+      .symptom-node { fill: #ccffcc; }
+      .behavior-node { fill: #ccccff; }
+      .patient-node { fill: #ffffcc; }
+      .therapy-node { fill: #ffccff; }
+      
+      .node-text { font-family: Arial, sans-serif; font-size: 14px; text-anchor: middle; }
+      .title-text { font-family: Arial, sans-serif; font-size: 24px; font-weight: bold; text-anchor: middle; }
+      .subtitle-text { font-family: Arial, sans-serif; font-size: 18px; text-anchor: middle; }
+      
+      .relationship { stroke: #666; stroke-width: 2; marker-end: url(#arrowhead); }
+      .relationship-text { font-family: Arial, sans-serif; font-size: 12px; fill: #333; text-anchor: middle; }
+      
+      .legend-box { fill: white; stroke: #333; stroke-width: 1; }
+      .legend-text { font-family: Arial, sans-serif; font-size: 12px; }
+    </style>
+    
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#666" />
+    </marker>
+  </defs>
+  
+  <!-- Title -->
+  <text x="450" y="30" class="title-text">Knowledge Graph Schema for Therapeutic System</text>
+  <text x="450" y="60" class="subtitle-text">Entity-Relationship Structure</text>
+  
+  <!-- Legend -->
+  <rect x="700" y="100" width="180" height="170" class="legend-box" />
+  <text x="790" y="120" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle">Legend</text>
+  
+  <rect x="710" y="135" width="20" height="20" class="disorder-node" />
+  <text x="795" y="150" class="legend-text">Disorder</text>
+  
+  <rect x="710" y="165" width="20" height="20" class="symptom-node" />
+  <text x="795" y="180" class="legend-text">Symptom</text>
+  
+  <rect x="710" y="195" width="20" height="20" class="behavior-node" />
+  <text x="795" y="210" class="legend-text">Behavior</text>
+  
+  <rect x="710" y="225" width="20" height="20" class="patient-node" />
+  <text x="795" y="240" class="legend-text">Patient</text>
+  
+  <rect x="710" y="255" width="20" height="20" class="therapy-node" />
+  <text x="795" y="270" class="legend-text">Therapy</text>
+  
+  <!-- Nodes -->
+  <!-- Disorder Nodes -->
+  <rect x="400" y="150" width="180" height="50" class="node disorder-node" />
+  <text x="490" y="180" class="node-text">Major Depressive Disorder</text>
+  
+  <rect x="220" y="250" width="180" height="50" class="node disorder-node" />
+  <text x="310" y="280" class="node-text">Generalized Anxiety Disorder</text>
+  
+  <rect x="580" y="250" width="180" height="50" class="node disorder-node" />
+  <text x="670" y="280" class="node-text">Bipolar Disorder</text>
+  
+  <!-- Symptom Nodes -->
+  <rect x="100" y="350" width="150" height="50" class="node symptom-node" />
+  <text x="175" y="380" class="node-text">Persistent Sadness</text>
+  
+  <rect x="270" y="350" width="150" height="50" class="node symptom-node" />
+  <text x="345" y="380" class="node-text">Excessive Worry</text>
+  
+  <rect x="440" y="350" width="150" height="50" class="node symptom-node" />
+  <text x="515" y="380" class="node-text">Loss of Interest</text>
+  
+  <rect x="610" y="350" width="150" height="50" class="node symptom-node" />
+  <text x="685" y="380" class="node-text">Mood Swings</text>
+  
+  <!-- Behavior Nodes -->
+  <rect x="100" y="450" width="150" height="50" class="node behavior-node" />
+  <text x="175" y="480" class="node-text">Social Withdrawal</text>
+  
+  <rect x="270" y="450" width="150" height="50" class="node behavior-node" />
+  <text x="345" y="480" class="node-text">Restlessness</text>
+  
+  <rect x="440" y="450" width="150" height="50" class="node behavior-node" />
+  <text x="515" y="480" class="node-text">Sleep Disturbance</text>
+  
+  <rect x="610" y="450" width="150" height="50" class="node behavior-node" />
+  <text x="685" y="480" class="node-text">Impulsivity</text>
+  
+  <!-- Patient Node -->
+  <rect x="350" y="550" width="200" height="50" class="node patient-node" />
+  <text x="450" y="580" class="node-text">Patient</text>
+  
+  <!-- Therapy Nodes -->
+  <rect x="100" y="150" width="150" height="50" class="node therapy-node" />
+  <text x="175" y="180" class="node-text">CBT</text>
+  
+  <rect x="650" y="150" width="150" height="50" class="node therapy-node" />
+  <text x="725" y="180" class="node-text">Reminiscence Therapy</text>
+  
+  <!-- Relationships -->
+  <!-- Disorder to Symptom -->
+  <line x1="465" y1="200" x2="400" y2="350" class="relationship" />
+  <text x="420" y="280" class="relationship-text" transform="rotate(-40, 420, 280)">EXHIBITS</text>
+  
+  <line x1="515" y1="200" x2="570" y2="350" class="relationship" />
+  <text x="550" y="280" class="relationship-text" transform="rotate(40, 550, 280)">EXHIBITS</text>
+  
+  <line x1="280" y1="300" x2="205" y2="350" class="relationship" />
+  <text x="225" y="330" class="relationship-text" transform="rotate(-45, 225, 330)">EXHIBITS</text>
+  
+  <line x1="340" y1="300" x2="360" y2="350" class="relationship" />
+  <text x="360" y="330" class="relationship-text" transform="rotate(30, 360, 330)">EXHIBITS</text>
+  
+  <line x1="640" y1="300" x2="575" y2="350" class="relationship" />
+  <text x="590" y="330" class="relationship-text" transform="rotate(-45, 590, 330)">EXHIBITS</text>
+  
+  <line x1="700" y1="300" x2="730" y2="350" class="relationship" />
+  <text x="725" y="330" class="relationship-text" transform="rotate(45, 725, 330)">EXHIBITS</text>
+  
+  <!-- Symptom to Behavior -->
+  <line x1="175" y1="400" x2="175" y2="450" class="relationship" />
+  <text x="190" y="425" class="relationship-text">MANIFESTS_AS</text>
+  
+  <line x1="345" y1="400" x2="345" y2="450" class="relationship" />
+  <text x="360" y="425" class="relationship-text">MANIFESTS_AS</text>
+  
+  <line x1="515" y1="400" x2="515" y2="450" class="relationship" />
+  <text x="530" y="425" class="relationship-text">MANIFESTS_AS</text>
+  
+  <line x1="685" y1="400" x2="685" y2="450" class="relationship" />
+  <text x="700" y="425" class="relationship-text">MANIFESTS_AS</text>
+  
+  <!-- Patient to Symptom -->
+  <line x1="410" y1="550" x2="280" y2="400" class="relationship" />
+  <text x="330" y="480" class="relationship-text" transform="rotate(-40, 330, 480)">REPORTS</text>
+  
+  <line x1="490" y1="550" x2="610" y2="400" class="relationship" />
+  <text x="560" y="480" class="relationship-text" transform="rotate(40, 560, 480)">REPORTS</text>
+  
+  <!-- Patient to Behavior -->
+  <line x1="390" y1="550" x2="280" y2="500" class="relationship" />
+  <text x="320" y="530" class="relationship-text" transform="rotate(-20, 320, 530)">DISPLAYS</text>
+  
+  <line x1="510" y1="550" x2="610" y2="500" class="relationship" />
+  <text x="570" y="530" class="relationship-text" transform="rotate(20, 570, 530)">DISPLAYS</text>
+  
+  <!-- Patient to Disorder -->
+  <line x1="370" y1="550" x2="280" y2="300" class="relationship" />
+  <text x="300" y="420" class="relationship-text" transform="rotate(-60, 300, 420)">DIAGNOSED_WITH</text>
+  
+  <line x1="450" y1="550" x2="450" y2="200" class="relationship" />
+  <text x="470" y="370" class="relationship-text" transform="rotate(-90, 470, 370)">DIAGNOSED_WITH</text>
+  
+  <line x1="530" y1="550" x2="630" y2="300" class="relationship" />
+  <text x="600" y="420" class="relationship-text" transform="rotate(60, 600, 420)">DIAGNOSED_WITH</text>
+  
+  <!-- Disorder to Disorder -->
+  <line x1="320" y1="250" x2="400" y2="175" class="relationship" />
+  <text x="340" y="205" class="relationship-text" transform="rotate(-60, 340, 205)">COMORBID_WITH</text>
+  
+  <line x1="580" y1="250" x2="500" y2="175" class="relationship" />
+  <text x="520" y="205" class="relationship-text" transform="rotate(60, 520, 205)">COMORBID_WITH</text>
+  
+  <!-- Therapy to Disorder -->
+  <line x1="175" y1="200" x2="400" y2="165" class="relationship" />
+  <text x="280" y="175" class="relationship-text">TREATS</text>
+  
+  <line x1="725" y1="200" x2="500" y2="165" class="relationship" />
+  <text x="620" y="175" class="relationship-text">TREATS</text>
+</svg>

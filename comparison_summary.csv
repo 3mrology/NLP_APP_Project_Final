@@ -1,0 +1,5 @@
+Metric,Advanced Neo4j Knowledge Graph Chatbot,Rule-Based Screening Tool,HuggingFace Inference API (Free),Together.ai  (Free Credits)
+Single-Turn Accuracy,1.00,0.92,0.17,0.67
+Multi-Turn Accuracy,1.00,0.25,0.25,0.75
+Average Latency (s),7.50,0.00,0.93,1.65
+Error Rate,0.00,0.00,0.00,0.00

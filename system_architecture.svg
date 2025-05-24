@@ -1,0 +1,155 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="700" viewBox="0 0 900 700">
+  <!-- Styles -->
+  <defs>
+    <style>
+      .layer-box { stroke: #333; stroke-width: 2; rx: 10; ry: 10; }
+      .ui-layer { fill: #e6f2ff; }
+      .processing-layer { fill: #e6ffe6; }
+      .knowledge-layer { fill: #fff2e6; }
+      .response-layer { fill: #f2e6ff; }
+      .storage-layer { fill: #ffe6e6; }
+      
+      .module { fill: white; stroke: #666; stroke-width: 1.5; rx: 5; ry: 5; }
+      .module-text { font-family: Arial, sans-serif; font-size: 14px; text-anchor: middle; }
+      .layer-title { font-family: Arial, sans-serif; font-size: 18px; font-weight: bold; text-anchor: middle; }
+      
+      .arrow { stroke: #555; stroke-width: 2; marker-end: url(#arrowhead); }
+      .bidirectional { stroke: #555; stroke-width: 2; marker-end: url(#arrowhead); marker-start: url(#arrowhead); }
+      
+      .kgraph-highlight { fill: #fff2e6; stroke: #ff8c00; stroke-width: 3; opacity: 0.9; }
+    </style>
+    
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#555" />
+    </marker>
+  </defs>
+  
+  <!-- Title -->
+  <text x="450" y="30" font-family="Arial, sans-serif" font-size="24" font-weight="bold" text-anchor="middle">Knowledge Graph-Enhanced Therapeutic Dialogue System</text>
+  <text x="450" y="60" font-family="Arial, sans-serif" font-size="18" text-anchor="middle">System Architecture</text>
+  
+  <!-- Layer Boxes -->
+  <rect x="50" y="100" width="800" height="100" class="layer-box ui-layer" />
+  <rect x="50" y="220" width="800" height="100" class="layer-box processing-layer" />
+  <rect x="50" y="340" width="800" height="100" class="layer-box knowledge-layer" />
+  <rect x="50" y="460" width="800" height="100" class="layer-box response-layer" />
+  <rect x="50" y="580" width="800" height="100" class="layer-box storage-layer" />
+  
+  <!-- Layer Titles -->
+  <text x="130" y="125" class="layer-title">User Interface Layer</text>
+  <text x="150" y="245" class="layer-title">Processing Layer</text>
+  <text x="180" y="365" class="layer-title">Knowledge & Reasoning Layer</text>
+  <text x="170" y="485" class="layer-title">Response Generation Layer</text>
+  <text x="150" y="605" class="layer-title">Data Storage Layer</text>
+  
+  <!-- UI Layer Modules -->
+  <rect x="100" y="135" width="200" height="50" class="module" />
+  <text x="200" y="165" class="module-text">User Input/Output Module</text>
+  
+  <rect x="350" y="135" width="200" height="50" class="module" />
+  <text x="450" y="165" class="module-text">Document/Image Upload</text>
+  
+  <rect x="600" y="135" width="200" height="50" class="module" />
+  <text x="700" y="165" class="module-text">Memory Graph Visualization</text>
+  
+  <!-- Processing Layer Modules -->
+  <rect x="100" y="255" width="140" height="50" class="module" />
+  <text x="170" y="285" class="module-text">NLU Module</text>
+  
+  <rect x="250" y="255" width="140" height="50" class="module" />
+  <text x="320" y="285" class="module-text">Pattern Detection</text>
+  
+  <rect x="400" y="255" width="140" height="50" class="module" />
+  <text x="470" y="285" class="module-text">Emotion Recognition</text>
+  
+  <rect x="550" y="255" width="140" height="50" class="module" />
+  <text x="620" y="285" class="module-text">Document Processing</text>
+  
+  <rect x="700" y="255" width="140" height="50" class="module" />
+  <text x="770" y="285" class="module-text">Image Analysis</text>
+  
+  <!-- Knowledge Layer Modules -->
+  <rect x="100" y="375" width="180" height="50" class="module" />
+  <text x="190" y="405" class="module-text">Neo4j Knowledge Graph</text>
+  
+  <rect x="300" y="375" width="180" height="50" class="module" />
+  <text x="390" y="405" class="module-text">Memory Graph Manager</text>
+  
+  <rect x="500" y="375" width="180" height="50" class="module" />
+  <text x="590" y="405" class="module-text">Therapeutic Strategy Selector</text>
+  
+  <rect x="700" y="375" width="140" height="50" class="module" />
+  <text x="770" y="405" class="module-text">Character Persona Manager</text>
+  
+  <!-- Response Layer Modules -->
+  <rect x="100" y="495" width="180" height="50" class="module" />
+  <text x="190" y="525" class="module-text">LLM Integration (Azure OpenAI)</text>
+  
+  <rect x="300" y="495" width="180" height="50" class="module" />
+  <text x="390" y="525" class="module-text">RAG Enhancement Module</text>
+  
+  <rect x="500" y="495" width="180" height="50" class="module" />
+  <text x="590" y="525" class="module-text">Therapeutic Response Formulator</text>
+  
+  <rect x="700" y="495" width="140" height="50" class="module" />
+  <text x="770" y="525" class="module-text">Character Voice Adapter</text>
+  
+  <!-- Storage Layer Modules -->
+  <rect x="100" y="615" width="180" height="50" class="module" />
+  <text x="190" y="645" class="module-text">Patient Session Database</text>
+  
+  <rect x="300" y="615" width="180" height="50" class="module" />
+  <text x="390" y="645" class="module-text">Persona Repository</text>
+  
+  <rect x="500" y="615" width="180" height="50" class="module" />
+  <text x="590" y="645" class="module-text">Document Vector Store</text>
+  
+  <rect x="700" y="615" width="140" height="50" class="module" />
+  <text x="770" y="645" class="module-text">Evaluation Metrics Store</text>
+  
+  <!-- Highlight the Knowledge Graph -->
+  <rect x="90" y="365" width="200" height="70" class="kgraph-highlight" />
+  
+  <!-- Vertical Flow Arrows -->
+  <line x1="200" y1="185" x2="200" y2="255" class="bidirectional" />
+  <line x1="450" y1="185" x2="450" y2="255" class="bidirectional" />
+  <line x1="700" y1="185" x2="700" y2="255" class="bidirectional" />
+  
+  <line x1="170" y1="305" x2="170" y2="375" class="bidirectional" />
+  <line x1="320" y1="305" x2="190" y2="375" class="arrow" />
+  <line x1="470" y1="305" x2="390" y2="375" class="arrow" />
+  <line x1="620" y1="305" x2="590" y2="375" class="arrow" />
+  <line x1="770" y1="305" x2="770" y2="375" class="arrow" />
+  
+  <line x1="190" y1="425" x2="190" y2="495" class="bidirectional" />
+  <line x1="390" y1="425" x2="390" y2="495" class="bidirectional" />
+  <line x1="590" y1="425" x2="590" y2="495" class="bidirectional" />
+  <line x1="770" y1="425" x2="770" y2="495" class="bidirectional" />
+  
+  <line x1="190" y1="545" x2="190" y2="615" class="bidirectional" />
+  <line x1="390" y1="545" x2="390" y2="615" class="bidirectional" />
+  <line x1="590" y1="545" x2="590" y2="615" class="bidirectional" />
+  <line x1="770" y1="545" x2="770" y2="615" class="bidirectional" />
+  
+  <!-- Horizontal Key Integration Arrows -->
+  <path d="M 190 400 C 300 430, 480 430, 590 400" class="bidirectional" fill="none" />
+  
+  <!-- Data Flow Label -->
+  <text x="390" y="445" font-family="Arial, sans-serif" font-size="14" font-style="italic" text-anchor="middle">Bidirectional Knowledge Flow</text>
+  
+  <!-- Legend -->
+  <rect x="50" y="50" width="20" height="20" fill="#e6f2ff" stroke="#333" stroke-width="1" />
+  <text x="75" y="65" font-family="Arial, sans-serif" font-size="12">UI</text>
+  
+  <rect x="100" y="50" width="20" height="20" fill="#e6ffe6" stroke="#333" stroke-width="1" />
+  <text x="125" y="65" font-family="Arial, sans-serif" font-size="12">Processing</text>
+  
+  <rect x="185" y="50" width="20" height="20" fill="#fff2e6" stroke="#333" stroke-width="1" />
+  <text x="210" y="65" font-family="Arial, sans-serif" font-size="12">Knowledge</text>
+  
+  <rect x="270" y="50" width="20" height="20" fill="#f2e6ff" stroke="#333" stroke-width="1" />
+  <text x="295" y="65" font-family="Arial, sans-serif" font-size="12">Response</text>
+  
+  <rect x="345" y="50" width="20" height="20" fill="#ffe6e6" stroke="#333" stroke-width="1" />
+  <text x="370" y="65" font-family="Arial, sans-serif" font-size="12">Storage</text>
+</svg>

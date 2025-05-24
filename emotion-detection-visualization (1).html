@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLM-Guided Reminiscence Therapy: Process Flow</title>
+    <style>
+        :root {
+            --primary: #4a6fa5;
+            --primary-light: #6789bd;
+            --primary-dark: #345183;
+            --secondary: #f5b042;
+            --secondary-light: #f8c976;
+            --accent-1: #5d9e7e;
+            --accent-2: #a55474;
+            --accent-3: #7e599e;
+            --text-dark: #2e3a59;
+            --text-light: #f5f6fa;
+            --background: #f0f3f8;
+            --card-bg: white;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            --step-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            --emotion-sadness: #3498db;
+            --emotion-joy: #f1c40f;
+            --emotion-anger: #e74c3c;
+            --emotion-fear: #9b59b6;
+            --emotion-surprise: #1abc9c;
+            --emotion-neutral: #95a5a6;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--background);
+            color: var(--text-dark);
+            line-height: 1.6;
+            padding: 0;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: var(--text-light);
+            padding: 60px 0 80px 0;
+            text-align: center;
+            clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            font-size: 2.6rem;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+        
+        h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: var(--primary-dark);
+        }
+        
+        h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .process-flow {
+            margin: 50px 0;
+            position: relative;
+        }
+        
+        .process-flow::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            width: 4px;
+            background: linear-gradient(to bottom, var(--primary-light), var(--accent-3));
+            transform: translateX(-50%);
+            z-index: 1;
+        }
+        
+        .step {
+            display: flex;
+            margin-bottom: 100px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .step:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+        
+        .step-number {
+            flex: 0 0 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            font-weight: 700;
+            z-index: 3;
+            box-shadow: var(--step-shadow);
+            position: relative;
+            margin: 0 60px;
+        }
+        
+        .step:nth-child(2) .step-number {
+            background: linear-gradient(135deg, var(--accent-3), #5d4183);
+        }
+        
+        .step:nth-child(3) .step-number {
+            background: linear-gradient(135deg, var(--accent-1), #3b7e5d);
+        }
+        
+        .step:nth-child(4) .step-number {
+            background: linear-gradient(135deg, var(--accent-2), #833a54);
+        }
+        
+        .step:nth-child(5) .step-number {
+            background: linear-gradient(135deg, var(--secondary), #d99325);
+        }
+        
+        .step-content {
+            flex: 1;
+            background-color: var(--card-bg);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+        
+        .step-content:hover {
+            transform: translateY(-5px);
+        }
+        
+        .step-title {
+            font-size: 1.5rem;
+            color: var(--primary-dark);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .step-title i {
+            font-size: 1.8rem;
+            color: var(--primary);
+        }
+        
+        .step-description {
+            margin-bottom: 20px;
+        }
+        
+        .example-box {
+            background-color: rgba(74, 111, 165, 0.05);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .example-box.image {
+            border-left-color: var(--accent-1);
+            background-color: rgba(93, 158, 126, 0.05);
+        }
+        
+        .example-box.emotion {
+            border-left-color: var(--accent-3);
+            background-color: rgba(126, 89, 158, 0.05);
+        }
+        
+        .example-box.strategy {
+            border-left-color: var(--accent-2);
+            background-color: rgba(165, 84, 116, 0.05);
+        }
+        
+        .example-box.response {
+            border-left-color: var(--secondary);
+            background-color: rgba(245, 176, 66, 0.05);
+        }
+        
+        .example-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--primary-dark);
+        }
+        
+        .example-content {
+            font-family: 'Consolas', monospace;
+            background-color: rgba(0, 0, 0, 0.03);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            overflow: auto;
+            max-height: 300px;
+        }
+        
+        .model-card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .model-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            color: var(--primary-dark);
+            margin-bottom: 10px;
+        }
+        
+        .model-description {
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+        }
+        
+        .model-output {
+            background-color: rgba(0, 0, 0, 0.03);
+            padding: 10px;
+            border-radius: 8px;
+            font-family: 'Consolas', monospace;
+            font-size: 0.85rem;
+        }
+        
+        .emotion-bars {
+            margin-top: 15px;
+        }
+        
+        .emotion-bar {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        
+        .emotion-label {
+            flex: 0 0 100px;
+            font-size: 0.9rem;
+        }
+        
+        .bar-container {
+            flex: 1;
+            height: 10px;
+            background-color: rgba(0, 0, 0, 0.05);
+            border-radius: 5px;
+            overflow: hidden;
+            margin-right: 10px;
+        }
+        
+        .bar-fill {
+            height: 100%;
+            border-radius: 5px;
+        }
+        
+        .bar-fill.sadness {
+            background-color: var(--emotion-sadness);
+        }
+        
+        .bar-fill.joy {
+            background-color: var(--emotion-joy);
+        }
+        
+        .bar-fill.anger {
+            background-color: var(--emotion-anger);
+        }
+        
+        .bar-fill.fear {
+            background-color: var(--emotion-fear);
+        }
+        
+        .bar-fill.surprise {
+            background-color: var(--emotion-surprise);
+        }
+        
+        .bar-fill.neutral {
+            background-color: var(--emotion-neutral);
+        }
+        
+        .score {
+            font-size: 0.9rem;
+            width: 50px;
+            text-align: right;
+        }
+        
+        .strategy-box {
+            display: flex;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .strategy-card {
+            flex: 1;
+            background-color: rgba(0, 0, 0, 0.03);
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid;
+        }
+        
+        .strategy-card.selected {
+            border-left-color: var(--accent-2);
+            background-color: rgba(165, 84, 116, 0.1);
+        }
+        
+        .strategy-card.not-selected {
+            border-left-color: var(--text-dark);
+            opacity: 0.6;
+        }
+        
+        .strategy-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .strategy-description {
+            font-size: 0.9rem;
+        }
+        
+        .image-analysis {
+            display: flex;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .image-container {
+            flex: 0 0 40%;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+        
+        .image-container img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        .analysis-details {
+            flex: 1;
+        }
+        
+        .analysis-step {
+            margin-bottom: 15px;
+            padding-left: 20px;
+            border-left: 2px solid var(--accent-1);
+        }
+        
+        .analysis-step-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--accent-1);
+        }
+        
+        .analysis-result {
+            background-color: rgba(0, 0, 0, 0.03);
+            padding: 10px;
+            border-radius: 8px;
+            font-family: 'Consolas', monospace;
+            font-size: 0.85rem;
+            margin-top: 8px;
+        }
+        
+        .memory-graph {
+            display: flex;
+            justify-content: center;
+            margin: 30px 0;
+        }
+        
+        .memory-graph img {
+            max-width: 100%;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+        }
+        
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .chat-message {
+            display: flex;
+            gap: 15px;
+            max-width: 85%;
+        }
+        
+        .chat-message.user {
+            align-self: flex-end;
+            flex-direction: row-reverse;
+        }
+        
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+        
+        .avatar.therapist {
+            background-color: var(--primary);
+        }
+        
+        .avatar.user {
+            background-color: var(--secondary);
+        }
+        
+        .avatar.iron-man {
+            background-color: #e23636;
+        }
+        
+        .message-bubble {
+            background-color: white;
+            padding: 15px;
+            border-radius: 18px;
+            box-shadow: var(--shadow);
+            position: relative;
+        }
+        
+        .chat-message.user .message-bubble {
+            border-bottom-right-radius: 0;
+            background-color: var(--secondary-light);
+        }
+        
+        .chat-message.therapist .message-bubble {
+            border-bottom-left-radius: 0;
+        }
+        
+        .chat-message.iron-man .message-bubble {
+            border-bottom-left-radius: 0;
+            background-color: rgba(226, 54, 54, 0.1);
+        }
+        
+        .message-text {
+            margin-bottom: 5px;
+        }
+        
+        .timestamp {
+            font-size: 0.75rem;
+            color: rgba(0, 0, 0, 0.4);
+            align-self: flex-end;
+        }
+        
+        .prompt-box {
+            background-color: rgba(74, 111, 165, 0.05);
+            border: 1px solid rgba(74, 111, 165, 0.2);
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        
+        .prompt-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--primary-dark);
+        }
+        
+        .prompt-section {
+            margin-bottom: 15px;
+        }
+        
+        .prompt-section-title {
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+            color: var(--primary);
+        }
+        
+        .prompt-content {
+            background-color: rgba(0, 0, 0, 0.03);
+            padding: 10px;
+            border-radius: 8px;
+            font-family: 'Consolas', monospace;
+            font-size: 0.85rem;
+        }
+        
+        .character-adaptation {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .adaptation-arrow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+        
+        .code-comment {
+            color: #27ae60;
+            font-style: italic;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 100px;
+            padding: 30px 0;
+            background-color: var(--primary-dark);
+            color: var(--text-light);
+        }
+        
+        .footer-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 968px) {
+            .process-flow::before {
+                left: 40px;
+            }
+            
+            .step, .step:nth-child(even) {
+                flex-direction: column;
+            }
+            
+            .step-number {
+                margin: 0 0 20px 0;
+                align-self: flex-start;
+            }
+            
+            .image-analysis {
+                flex-direction: column;
+            }
+            
+            .image-container {
+                flex: 0 0 auto;
+            }
+            
+            .strategy-box {
+                flex-direction: column;
+            }
+        }
+    </style>
+    <!-- Include Fontawesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>LLM-Guided Reminiscence Therapy</h1>
+            <p class="subtitle">A step-by-step visualization of how the system processes user input, analyzes images, detects emotions, and generates therapeutic responses</p>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="process-flow">
+            <!-- Step 1: User Input -->
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <div class="step-title">
+                        <i class="fas fa-comment-dots"></i>
+                        User Input Processing
+                    </div>
+                    <p class="step-description">The process begins when the user sends a message or uploads an image through the Streamlit interface.</p>
+                    
+                    <div class="example-box">
+                        <div class="example-title">Example User Input</div>
+                        <div class="chat-container">
+                            <div class="chat-message user">
+                                <div class="avatar user">U</div>
+                                <div class="message-bubble">
+                                    <p class="message-text">I found this old photo of my childhood home. Looking at it makes me feel sad and nostalgic.</p>
+                                    <span class="timestamp">2:34 PM</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="example-box image">
+                        <div class="example-title">Uploaded Image</div>
+                        <div class="image-analysis">
+                            <div class="image-container">
+                                <img src="https://images.unsplash.com/photo-1568605114967-8130f3a36994?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Example house image">
+                            </div>
+                            <div class="analysis-details">
+                                <p>The user has uploaded an image along with their text message. This image will be processed by the BLIP image analyzer in the next step.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Step 2: Image Analysis with BLIP -->
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <div class="step-title">
+                        <i class="fas fa-image"></i>
+                        Image Analysis with BLIP
+                    </div>
+                    <p class="step-description">When an image is uploaded, the Salesforce/blip-image-captioning-base model processes it to generate a description that can be referenced in therapy.</p>
+                    
+                    <div class="model-card">
+                        <div class="model-title">
+                            <i class="fas fa-cog"></i>
+                            BLIP Image Analyzer
+                        </div>
+                        <p class="model-description">
+                            BLIP (Bootstrapping Language-Image Pre-training) is a vision-language model that can generate captions for images. In our system, it analyzes uploaded photos to extract content that might trigger memories or emotions.
+                        </p>
+                    </div>
+                    
+                    <div class="example-box image">
+                        <div class="example-title">BLIP Processing Steps</div>
+                        <div class="analysis-step">
+                            <div class="analysis-step-title">1. Image Preprocessing</div>
+                            <p>The image is loaded, resized, and normalized to meet the model's input requirements.</p>
+                        </div>
+                        <div class="analysis-step">
+                            <div class="analysis-step-title">2. Feature Extraction</div>
+                            <p>Visual features are extracted using a pre-trained vision transformer backbone.</p>
+                        </div>
+                        <div class="analysis-step">
+                            <div class="analysis-step-title">3. Caption Generation</div>
+                            <p>The extracted features are passed to a language model to generate a textual description.</p>
+                            <div class="analysis-result">
+                                "a two story white house with a red door and a well-maintained garden in front"
+                            </div>
+                        </div>
+                        <div class="analysis-step">
+                            <div class="analysis-step-title">4. Therapeutic Question Generation</div>
+                            <p>Based on the image content, therapeutic questions are generated to explore related memories.</p>
+                            <div class="analysis-result">
+                                [
+                                  "What feelings arise when you look at this house?",
+                                  "What memories do you associate with this type of home?",
+                                  "How does this image connect to your personal history?"
+                                ]
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Step 3: Emotion Detection -->
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <div class="step-title">
+                        <i class="fas fa-heart"></i>
+                        Emotion Detection
+                    </div>
+                    <p class="step-description">The j-hartmann/emotion-english-distilroberta-base model analyzes the user's message to detect emotions and their intensity.</p>
+                    
+                    <div class="model-card">
+                        <div class="model-title">
+                            <i class="fas fa-brain"></i>
+                            emotion-english-distilroberta-base
+                        </div>
+                        <p class="model-description">
+                            This specialized emotion detection model from Hugging Face is fine-tuned to recognize emotional content in text. It provides classification scores across multiple emotion categories.
+                        </p>
+                    </div>
+                    
+                    <div class="example-box emotion">
+                        <div class="example-title">Text for Emotion Analysis</div>
+                        <div class="example-content">
+                            "I found this old photo of my childhood home. Looking at it makes me feel sad and nostalgic."
+                        </div>
+                        
+                        <div class="emotion-bars">
+                            <div class="emotion-bar">
+                                <span class="emotion-label">Sadness</span>
+                                <div class="bar-container">
+                                    <div class="bar-fill sadness" style="width: 78%"></div>
+                                </div>
+                                <span class="score">0.78</span>
+                            </div>
+                            <div class="emotion-bar">
+                                <span class="emotion-label">Nostalgia</span>
+                                <div class="bar-container">
+                                    <div class="bar-fill surprise" style="width: 15%"></div>
+                                </div>
+                                <span class="score">0.15</span>
+                            </div>
+                            <div class="emotion-bar">
+                                <span class="emotion-label">Joy</span>
+                                <div class="bar-container">
+                                    <div class="bar-fill joy" style="width: 4%"></div>
+                                </div>
+                                <span class="score">0.04</span>
+                            </div>
+                            <div class="emotion-bar">
+                                <span class="emotion-label">Fear</span>
+                                <div class="bar-container">
+                                    <div class="bar-fill fear" style="width: 2%"></div>
+                                </div>
+                                <span class="score">0.02</span>
+                            </div>
+                            <div class="emotion-bar">
+                                <span class="emotion-label">Anger</span>
+                                <div class="bar-container">
+                                    <div class="bar-fill anger" style="width: 1%"></div>
+                                </div>
+                                <span class="score">0.01</span>
+                            </div>
+                        </div>
+                        
+                        <div class="emotion-result">
+                            <div class="example-title">Emotion Detection Result</div>
+                            <div class="example-content">
+                                {
+                                  "primary_emotion": "sadness",
+                                  "intensity": 0.78,
+                                  "secondary_emotion": "nostalgia",
+                                  "secondary_intensity": 0.15
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Step 4: Strategy Selection -->
+            <div class="step">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <div class="step-title">
+                        <i class="fas fa-chess"></i>
+                        Therapeutic Strategy Selection
+                    </div>
+                    <p class="step-description">Based on the detected emotion and its intensity, the system selects the most appropriate therapeutic approach.</p>
+                    
+                    <div class="example-box strategy">
+                        <div class="example-title">Strategy Selection Logic</div>
+                        <div class="example-content">
+                            <span class="code-comment"># Determine best therapy strategy based on detected emotion and intensity</span>
+                            emotion = "sadness"
+                            intensity = 0.78
+                            
+                            <span class="code-comment"># Decision logic</span>
+                            if emotion in ["sadness", "fear"] and intensity > 0.7:
+                                strategy = "reflective_listening"
+                            elif emotion in ["anger", "disgust"] and intensity > 0.6:
+                                strategy = "cbt"
+                            elif emotion in ["neutral", "joy", "surprise"] and intensity > 0.5:
+                                strategy = "psychodynamic"
+                            else:
+                                strategy = "general"
+                                
+                            <span class="code-comment"># Result: "reflective_listening" selected</span>
+                        </div>
+                        
+                        <div class="strategy-box">
+                            <div class="strategy-card selected">
+                                <div class="strategy-title">✓ Reflective Listening</div>
+                                <div class="strategy-description">
+                                    Validates emotions, paraphrases for understanding, and focuses on emotional content. Best for high-intensity sadness or fear.
+                                </div>
+                            </div>
+                            <div class="strategy-card not-selected">
+                                <div class="strategy-title">CBT Approach</div>
+                                <div class="strategy-description">
+                                    Challenges negative thought patterns, suggests alternative perspectives. Best for anger or frustration.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="memory-graph">
+                        <img src="https://mermaid.ink/img/pako:eNp1kU1rwzAMhv-K0GmF9QB1aJfWTcLojjvssMOGD8KxmojGdnDsbgvhv8-Ot3UbdLJlPe8rSwfooiDIoB5p26rpgSTnxvZVU6sFSU9ypLEXVbe2RXTY-8Wdb2sao950N9clcfF42OcX87huZ1_Eom-XyykrJWFJGtRNmVfv5XvCf9VFz1SLBnv8sPRBWyTRosO2qBpSTcpWRUg2uiRXobGJdJEVGlDodCQGNcMBiLSzMvlRGF6svcNtm9s552EYkpG5CbNvkjpJvr8JJZjUfgbIAgSeTQqzm9koDEARDejJ9kWFPwUWKPk5B2SLCVP6kLw6tVjQC6SgcMCBuOKRQ1pR71rIfpCZ9iXb1lHHDKUfU2v2qG_7RMTzYhRxWg_pL2-1i6s" alt="Memory Graph">
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Step 5: Response Generation -->
+            <div class="step">
+                <div class="step-number">5</div>
+                <div class="step-content">
+                    <div class="step-title">
+                        <i class="fas fa-robot"></i>
+                        GPT-4 Response Generation & Character Adaptation
+                    </div>
+                    <p class="step-description">All components feed into a comprehensive prompt for Azure OpenAI's GPT-4, which generates the therapeutic response. If a character persona is active, the response is adapted to match.</p>
+                    
+                    <div class="prompt-box">
+                        <div class="prompt-title">Complete LLM Prompt</div>
+                        
+                        <div class="prompt-section">
+                            <div class="prompt-section-title">Character Persona</div>
+                            <div class="prompt-content">
+                                You are a skilled therapist specializing in reminiscence therapy, taking on the persona of Iron Man.
+                                Embody the personality traits of Iron Man: witty, confident, intelligent, uses technical terms, makes pop culture references, occasionally sarcastic but ultimately supportive and caring beneath a tough exterior.
+                            </div>
+                        </div>
+                        
+                        <div class="prompt-section">
+                            <div class="prompt-section-title">Session Context</div>
+                            <div class="prompt-content">
+                                Current therapy session context:
+                                - session_number: 1
+                                - therapy_focus: general reminiscence
+                            </div>
+                        </div>
+                        
+                        <div class="prompt-section">
+                            <div class="prompt-section-title">Emotional Context</div>
+                            <div class="prompt-content">
+                                The patient has expressed emotion: sadness with intensity: 0.78.
+                                BLIP image analysis: "a two story white house with a red door and a well-maintained garden in front"
+                            </div>
+                        </div>
+                        
+                        <div class="prompt-section">
+                            <div class="prompt-section-title">Relevant Memories</div>
+                            <div class="prompt-content">
+                                Based on the patient's history, these memories appear relevant:
+                                1. Date: Childhood, Topic: Family, People: Mother, Father, Description: Moving to a new house when I was 8 years old.
+                            </div>
+                        </div>
+                        
+                        <div class="prompt-section">
+                            <div class="prompt-section-title">Therapeutic Strategy</div>
+                            <div class="prompt-content">
+                                Please respond using reflective listening techniques:
+                                1. Acknowledge and validate their emotions
+                                2. Paraphrase their message to show understanding
+                                3. Focus on emotional undertones
+                                4. Use phrases like "I hear you saying that..." or "It sounds like you feel..."
+                                5. Don't rush to problem-solving
+                            </div>
+                        </div>
+                        
+                        <div class="prompt-section">
+                            <div class="prompt-section-title">Conversation History & Current Message</div>
+                            <div class="prompt-content">
+                                Previous conversation:
+                                [Start of conversation]
+                                
+                                Patient's message: I found this old photo of my childhood home. Looking at it makes me feel sad and nostalgic.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="example-box response">
+                        <div class="example-title">GPT-4 Base Response (Standard Therapist)</div>
+                        <div class="chat-container">
+                            <div class="chat-message therapist">
+                                <div class="avatar therapist">T</div>
+                                <div class="message-bubble">
+                                    <p class="message-text">I can hear the sadness and nostalgia in what you're sharing about this photo of your childhood home. Old photos often bring up complex emotions, especially of places that were significant to us. The house in the image - with its white exterior and red door - seems to hold meaningful memories for you. When you look at it and feel that sadness, what specific memories or feelings come up for you?</p>
+                                    <span class="timestamp">2:35 PM</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="character-adaptation">
+                        <div class="adaptation-arrow">
+                            <i class="fas fa-arrow-down"></i>
+                        </div>
+                        
+                        <div class="model-card">
+                            <div class="model-title">
+                                <i class="fas fa-mask"></i>
+                                Character Adaptation (Iron Man Persona)
+                            </div>
+                            <p class="model-description">
+                                The PersonaAdapter transforms the standard therapeutic response to match the speaking style and personality traits of the selected character.
+                            </p>
+                        </div>
+                        
+                        <div class="adaptation-arrow">
+                            <i class="fas fa-arrow-down"></i>
+                        </div>
+                        
+                        <div class="example-box response">
+                            <div class="example-title">Final Adapted Response</div>
+                            <div class="chat-container">
+                                <div class="chat-message iron-man">
+                                    <div class="avatar iron-man">IM</div>
+                                    <div class="message-bubble">
+                                        <p class="message-text">So, we've got a visual on the old homestead, huh? That white house with the red door is clearly running some emotional subroutines for you. Look, I get it - my Malibu place got blown to bits, and sometimes I still find myself designing improvements for a house that's sitting at the bottom of the ocean. Places aren't just structures; they're memory storage units. What particular files get accessed when you're looking at this particular memory bank? Any specific moments those white walls and red door are bringing back to the surface?</p>
+                                        <span class="timestamp">2:35 PM</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <h2>System Integration Overview</h2>
+        <p>The complete system demonstrates how multiple specialized components work together to create a personalized therapeutic experience:</p>
+        
+        <div class="model-card">
+            <div class="model-title">
+                <i class="fas fa-project-diagram"></i>
+                Component Interactions
+            </div>
+            <p class="model-description">
+                <ol>
+                    <li><strong>User Input & Image Upload</strong>: Handled by the Streamlit interface</li>
+                    <li><strong>Image Analysis</strong>: BLIP model extracts visual content and meaning</li>
+                    <li><strong>Emotion Detection</strong>: DistilRoBERTa model classifies emotional content</li>
+                    <li><strong>Strategy Selection</strong>: Rule-based system chooses appropriate therapeutic approach</li>
+                    <li><strong>Memory Graph</strong>: NetworkX maintains connections between memories</li>
+                    <li><strong>Response Generation</strong>: Azure OpenAI GPT-4 creates therapeutic response</li>
+                    <li><strong>Character Adaptation</strong>: PersonaAdapter transforms response to match character voice</li>
+                </ol>
+            </p>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <div class="footer-content">
+            <p>LLM-Guided Reminiscence Therapy System</p>
+            <p>For research and educational purposes only</p>
+        </div>
+    </div>
+</body>
+</html>

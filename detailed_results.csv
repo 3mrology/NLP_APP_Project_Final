@@ -1,0 +1,20 @@
+Test ID,Category,Expected Disorder,Advanced Neo4j Knowledge Graph Chatbot Detected,Rule-Based Screening Tool Detected,HuggingFace Inference API (Free) Detected,Together.ai  (Free Credits) Detected
+DEP-01,Depression,Major Depressive Disorder,Major Depressive Disorder,Major Depressive Disorder,Generalized Anxiety Disorder,
+DEP-02,Depression,Major Depressive Disorder,Major Depressive Disorder,Major Depressive Disorder,Major Depressive Disorder,Major Depressive Disorder
+DEP-03,Depression,Major Depressive Disorder,Major Depressive Disorder,Major Depressive Disorder,Major Depressive Disorder,Major Depressive Disorder
+ANX-01,Anxiety,Generalized Anxiety Disorder,Generalized Anxiety Disorder,Generalized Anxiety Disorder,Major Depressive Disorder,Generalized Anxiety Disorder
+ANX-02,Anxiety,Generalized Anxiety Disorder,Generalized Anxiety Disorder,Generalized Anxiety Disorder,Major Depressive Disorder,Generalized Anxiety Disorder
+ANX-03,Anxiety,Generalized Anxiety Disorder,Generalized Anxiety Disorder,Major Depressive Disorder,Major Depressive Disorder,Generalized Anxiety Disorder
+BIP-01,Bipolar,Bipolar Disorder,Bipolar Disorder,Bipolar Disorder,Major Depressive Disorder,Bipolar Disorder
+BIP-02,Bipolar,Bipolar Disorder,Bipolar Disorder,Bipolar Disorder,Major Depressive Disorder,Major Depressive Disorder
+BIP-03,Bipolar,Bipolar Disorder,Bipolar Disorder,Bipolar Disorder,Major Depressive Disorder,Bipolar Disorder
+PAN-01,Panic,Panic Disorder,Panic Disorder,Panic Disorder,Major Depressive Disorder,Bipolar Disorder
+PAN-02,Panic,Panic Disorder,Panic Disorder,Panic Disorder,Generalized Anxiety Disorder,Panic Disorder
+PAN-03,Panic,Panic Disorder,Panic Disorder,Panic Disorder,Generalized Anxiety Disorder,Major Depressive Disorder
+
+Multi-Turn Scenarios
+Test ID,Category,Expected Disorder,Advanced Neo4j Knowledge Graph Chatbot Detected,Rule-Based Screening Tool Detected,HuggingFace Inference API (Free) Detected,Together.ai  (Free Credits) Detected
+MT-01,,Major Depressive Disorder,Major Depressive Disorder,,Major Depressive Disorder,Major Depressive Disorder
+MT-02,,Generalized Anxiety Disorder,Generalized Anxiety Disorder,Major Depressive Disorder,Major Depressive Disorder,Generalized Anxiety Disorder
+MT-03,,Bipolar Disorder,Bipolar Disorder,Bipolar Disorder,Major Depressive Disorder,Major Depressive Disorder
+MT-04,,Panic Disorder,Panic Disorder,Generalized Anxiety Disorder,Major Depressive Disorder,Panic Disorder
